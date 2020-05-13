@@ -1,0 +1,92 @@
+---
+title: "PhyloFlorAndGenbankQuery"
+author: "Marcial Escudero"
+date: "5/12/2020"
+output: html_document
+---
+
+```{r}
+
+mydata <- read.csv("./matriz ausencia presencia.csv")
+
+specieslist <- as.character(mydata[,1][mydata[,5] != "S"])
+specieslist
+
+
+specieslist <- paste(specieslist, "[Organism]", sep='')
+specieslist
+
+#specieslist <- paste(specieslist, collapse=' OR ')
+#specieslist
+
+specieslist <- paste(specieslist, " AND internal transcribed spacer", sep='')
+specieslist
+
+library(rentrez)
+
+Query1 <- list()
+for (i in 1:length(specieslist)) Query1[[i]] <- entrez_search(db="nuccore", term=specieslist[i])
+
+Query1
+
+ITS <- matrix(0,471,2)
+ITS[,1] <- as.character(mydata[,1][mydata[,5] != "S"])
+for (i in 1:471) ITS[i,2] <- paste(Query1[[i]][1])
+ITS
+write.table(ITS, file = "ITS.txt")
+
+specieslist.rbcl <- as.character(mydata[,1][mydata[,5] != "S"])
+specieslist.rbcl <- paste(specieslist.rbcl, "[Organism]", sep='')
+specieslist.rbcl <- paste(specieslist.rbcl, " AND rbcl", sep='')
+specieslist.rbcl
+Query.rbcl <- list()
+for (i in 1:length(specieslist.rbcl)) Query.rbcl[[i]] <- entrez_search(db="nuccore", term=specieslist.rbcl[i])
+Query.rbcl
+rbcl <- matrix(0,471,2)
+rbcl[,1] <- as.character(mydata[,1][mydata[,5] != "S"])
+for (i in 1:471) rbcl[i,2] <- paste(Query.rbcl[[i]][1])
+rbcl
+write.table(rbcl, file = "rbcl.txt")
+
+specieslist.matk <- as.character(mydata[,1][mydata[,5] != "S"])
+specieslist.matk <- paste(specieslist.matk, "[Organism]", sep='')
+specieslist.matk <- paste(specieslist.matk, " AND matk", sep='')
+specieslist.matk
+Query.matk <- list()
+for (i in 1:length(specieslist.matk)) Query.matk[[i]] <- entrez_search(db="nuccore", term=specieslist.matk[i])
+Query.matk
+matk <- matrix(0,471,2)
+matk[,1] <- as.character(mydata[,1][mydata[,5] != "S"])
+for (i in 1:471) matk[i,2] <- paste(Query.matk[[i]][1])
+matk
+write.table(matk, file = "matk.txt")
+
+specieslist.psbA.trnH <- as.character(mydata[,1][mydata[,5] != "S"])
+specieslist.psbA.trnH <- paste(specieslist.psbA.trnH, "[Organism]", sep='')
+specieslist.psbA.trnH <- paste(specieslist.psbA.trnH, " AND psbA-trnH", sep='')
+specieslist.psbA.trnH
+Query.psbA.trnH <- list()
+for (i in 1:length(specieslist.psbA.trnH)) Query.psbA.trnH[[i]] <- entrez_search(db="nuccore", term=specieslist.psbA.trnH[i])
+Query.psbA.trnH
+psbA.trnH <- matrix(0,471,2)
+psbA.trnH[,1] <- as.character(mydata[,1][mydata[,5] != "S"])
+for (i in 1:471) psbA.trnH[i,2] <- paste(Query.psbA.trnH[[i]][1])
+psbA.trnH
+write.table(psbA.trnH, file = "psbA-trnH.txt")
+
+
+specieslist.ITS <- as.character(mydata[,1][mydata[,5] != "S"])
+specieslist.ITS <- paste(specieslist.ITS, "[Organism]", sep='')
+specieslist.ITS <- paste(specieslist.ITS, " AND internal AND transcribed spacer", sep='')
+specieslist.ITS
+Query.ITS <- list()
+for (i in 1:length(specieslist.ITS)) Query.ITS[[i]] <- entrez_search(db="nuccore", term=specieslist.ITS[i])
+Query.ITS
+ITS <- matrix(0,471,2)
+ITS[,1] <- as.character(mydata[,1][mydata[,5] != "S"])
+for (i in 1:471) ITS[i,2] <- paste(Query.ITS[[i]][1])
+ITS
+write.table(ITS, file = "ITS.txt")
+
+```
+
